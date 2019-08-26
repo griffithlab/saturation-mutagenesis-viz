@@ -1,0 +1,7 @@
+# exclude
+data/*
+.DS_Store
+.Rhistory
+
+# exclude exceptions
+!data/.gitkeep
