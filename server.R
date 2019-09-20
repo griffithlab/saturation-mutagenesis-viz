@@ -14,27 +14,68 @@ library(reshape2)
 ################################################################################
 ##################### Load data and clean it up ################################
 
+################# kato et al. dataset ##########################################
+
 # Load variant/promoter dataset
-promoterAssay <- fread("data/UMD_variants_US.tsv")
+kato <- fread("data/kato_et_al_db.tsv")
 
 # If assay has "No data" convert these values to NA
-promoterAssay[promoterAssay == "No data"] <- NA
+kato[kato == "No data"] <- NA
 
 # Filter to only columns/rows we would care about
 # we're hard coding the transcript here
-promoterAssay <- promoterAssay[,c("Transcript t1 NM_000546.5", "Protein P1 TP53_alpha  NP_000537.3",
+kato <- kato[,c("Transcript t1 NM_000546.5", "Protein P1 TP53_alpha  NP_000537.3",
                                   "Variant_Classification", "WAF1_Act",
                                   "MDM2_Act", "BAX_Act", "_14_3_3_s_Act", "AIP_Act",
                                   "GADD45_Act", "NOXA_Act", "p53R2_Act")]
-colnames(promoterAssay) <- c("cDNA_variant", "p_variant", "Variant_Classification", "WAF1_Act",
+colnames(kato) <- c("cDNA_variant", "p_variant", "Variant_Classification", "WAF1_Act",
                              "MDM2_Act", "BAX_Act", "_14_3_3_s_Act", "AIP_Act",
                              "GADD45_Act", "NOXA_Act", "p53R2_Act")
-promoterAssay <- promoterAssay[promoterAssay$Variant_Classification == "Missense_Mutation",]
+kato <- kato[kato$Variant_Classification == "Missense_Mutation",]
+kato$publication <- "kato et al. 2013"
+kato$Variant_Classification <- "non synonymous"
+
+################# giacomelli et al. 2018 dataset ###############################
+
+# read data in
+giacomelli <- fread("data/giacomelli_et_al_2018.tsv")
+giacomelli$Variant_Classification <- ifelse(giacomelli$AA_variant == "B", "synonymous", "non synonymous")
+giacomelli$cDNA_variant <- NA
+
+# calculate normalized score
+giacomelli$score <- (giacomelli$`A549_p53WT_Nutlin-3_Z-score` +
+                       giacomelli$`A549_p53NULL_Nutlin-3_Z-score` -
+                       giacomelli$`A549_p53NULL_Etoposide_Z-score`)/3
+
+a <- function(x){
+  
+  x <- as.numeric(x[c("A549_p53WT_Nutlin-3_Z-score", "A549_p53NULL_Nutlin-3_Z-score", "A549_p53NULL_Etoposide_Z-score")])
+  x[3] <- (-1*x[3])
+  sd(x)/sqrt(3)
+}
+
+giacomelli$publication <- "giacomelli et al. 2018"
+giacomelli$p_variant <- paste0("p.", giacomelli$AA_wt, giacomelli$Position, giacomelli$AA_variant)
+# giacomelli$sd <- apply(giacomelli, 1, a)
+# giacomelli$test <- giacomelli$`A549_p53NULL_Nutlin-3_Z-score`
+# giacomelli$test <- giacomelli$`A549_p53NULL_Etoposide_Z-score`
+# giacomelli$test <- giacomelli$`A549_p53WT_Nutlin-3_Z-score`
+# 
+# ggplot(giacomelli, aes(x=test, fill=Variant_Classification)) + geom_density(alpha=.5)
+
+####################### combine papers #########################################
 
 # format the data for the promoter density plot
-promoterDensityPlotData <- suppressWarnings(melt(promoterAssay, id.vars=c("cDNA_variant", "p_variant", "Variant_Classification")))
-promoterDensityPlotData$value <- suppressWarnings(as.numeric(as.character(promoterDensityPlotData$value)))
-promoterDensityPlotData <- as.data.frame(na.omit(promoterDensityPlotData))
+promoterDensityPlotData_kato <- suppressWarnings(melt(kato, id.vars=c("cDNA_variant", "p_variant", "Variant_Classification", "publication")))
+promoterDensityPlotData_kato$value <- suppressWarnings(as.numeric(as.character(promoterDensityPlotData_kato$value)))
+promoterDensityPlotData_kato <- as.data.frame(na.omit(promoterDensityPlotData_kato))
+
+promoterDensityPlotData_giacomelli <- suppressWarnings(melt(giacomelli[,c("cDNA_variant", "p_variant", "Variant_Classification", "publication", "A549_p53WT_Nutlin-3_Z-score", "A549_p53NULL_Nutlin-3_Z-score", "A549_p53NULL_Etoposide_Z-score")], id.vars=c("cDNA_variant", "p_variant", "Variant_Classification", "publication")))
+promoterDensityPlotData_giacomelli$value <- suppressWarnings(as.numeric(as.character(promoterDensityPlotData_giacomelli$value)))
+promoterDensityPlotData_giacomelli <- as.data.frame(promoterDensityPlotData_giacomelli)
+
+# combine the data
+promoterDensityPlotData <- rbind(promoterDensityPlotData_giacomelli, promoterDensityPlotData_kato)
 
 ################################################################################
 ##################### Define the shiny server ##################################
@@ -51,31 +92,30 @@ shinyServer(function(input, output, session){
   # Here we select a variant from the data
   updateSelectizeInput(
     session, 'variant', server = TRUE,
-    choices = promoterAssay$p_variant
+    choices = kato$p_variant
   )
     
   # output Raw data table
-  output$promoterAssayData <- DT::renderDataTable(promoterAssay[,c("cDNA_variant", "p_variant", "Variant_Classification")],
+  output$promoterAssayData <- DT::renderDataTable(promoterDensityPlotData[,c("cDNA_variant", "p_variant", "Variant_Classification", "publication")],
                                                   rownames=F, options=list(pageLength = 10))
   
   # output the promoter density plot
   output$promoterDensityPlot <- renderPlot({
     
     # find the x-intercept for the combination of promoter groups and variants
-    variantXintercept <- promoterDensityPlotData[promoterDensityPlotData$variable %in% input$promoterCheckGroup,]
+    variantXintercept <- promoterDensityPlotData[promoterDensityPlotData$variable %in% c(input$promoterCheckGroup_kato, input$promoterCheckGroup_giacomelli),]
     variantXintercept <- variantXintercept[variantXintercept$p_variant %in% input$variant,]
     
     # make a density plot for only the selected promoter by filtering the data
-    promoterDensityPlotData <- promoterDensityPlotData[promoterDensityPlotData$variable %in% input$promoterCheckGroup,]
+    promoterDensityPlotData <- promoterDensityPlotData[promoterDensityPlotData$variable %in% c(input$promoterCheckGroup_kato, input$promoterCheckGroup_giacomelli),]
     
     # construct the plot
-    plot <- ggplot(promoterDensityPlotData, aes(value, fill=variable)) +
+    plot <- ggplot(promoterDensityPlotData, aes(value, fill=Variant_Classification)) +
            geom_density(alpha=1) + geom_vline(data=variantXintercept, aes(xintercept=value)) +
            theme_bw() +
            theme(strip.text=element_text(color="white"), strip.background=element_rect(fill="black")) +
            scale_fill_manual("Promoter Domain",
-                            values=c("#EAB543", "#58B19F", "#82589F", "#182C61",
-                                     "#F97F51", "#2C3A47", "#FD7272", "#1B9CFC")) +
+                            values=c("#EAB543", "#58B19F")) +
     facet_wrap(~variable, drop=TRUE)
     
     return(plot)
