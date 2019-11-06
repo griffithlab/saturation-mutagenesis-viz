@@ -17,6 +17,7 @@ navbarPage("CDI TP53 Project", theme="bootstrap.css",
            assayDensityScore(),
            heatmapTab(),
            datasetsTab()
+           
 )
 
 
