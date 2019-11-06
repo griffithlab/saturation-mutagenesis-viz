@@ -5,3 +5,4 @@ data/*
 
 # exclude exceptions
 !data/.gitkeep
+.Rproj.user

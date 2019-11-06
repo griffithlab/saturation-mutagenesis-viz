@@ -2,14 +2,11 @@
 ############################### server startup #################################
 ################################################################################
 
+source("global.R")
+
+
 # Here we perform 1-off tasks at the start of the app to save computational
 # time rather than doing it everytime the server talks to the UI
-
-# load back end libraries
-library(data.table)
-library(ggplot2)
-library(DT)
-library(reshape2)
 
 ################################################################################
 ##################### Load data and clean it up ################################
