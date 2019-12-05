@@ -35,7 +35,16 @@ assayDensityScore <- function(){
                                                                      "GADD45_Act"="GADD45_Act",
                                                                      "NOXA_Act"="NOXA_Act",
                                                                      "p53R2_Act"="p53R2_Act"),
-                                                      selected = "WAF1_Act")),
+                                                      selected = "WAF1_Act"),
+                                   
+                                   checkboxGroupInput("promoterCheckGroup_boettcher", label = h3("Boettcher et al. 2019"),
+                                                      choices = list("R1_Nutlin_Ratio"="R1_Nutlin_Ratio_Lo_Hi",
+                                                                     "R3_Nutlin_Ratio"="R3_Nutlin_Ratio_Lo_Hi",
+                                                                     "R1_DMSO_Ratio"="R1_DMSO_Ratio_Lo_Hi",
+                                                                     "R3_DMSO_Ratio"="R3_DMSO_Ratio_Lo_Hi")
+                                                      )
+                                   
+                                   ),
                             
                             # Second column of nested widget row
                             column(6,

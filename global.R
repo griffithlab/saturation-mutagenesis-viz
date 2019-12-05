@@ -94,6 +94,23 @@ keep <- c("cDNA_variant", "p_variant", "Variant_Classification", "publication",
           "A549_p53NULL_Etoposide_Experiment")
 hahn <- hahn[,keep]
 
+####################### boettcher 2019 paper ###################################
+
+# read data
+boettcher <- read.delim("data/boettcher_2019.tsv", stringsAsFactors = F)
+
+# add needed columns
+boettcher$publication <- "Boettcher 2019"
+boettcher$Variant_Classification <- ifelse(boettcher$Wt_aa == boettcher$Vt_aa, "synonymous", "non synonymous")
+boettcher$cDNA_variant <- NA
+boettcher$p_variant <- paste("p.", boettcher$Wt_aa, boettcher$POS, boettcher$Vt_aa, sep="")
+
+# remove columns we don't need
+keep <- c("cDNA_variant", "p_variant", "Variant_Classification", "publication",
+          "R1_Nutlin_Ratio_Lo_Hi", "R3_Nutlin_Ratio_Lo_Hi", "R1_DMSO_Ratio_Lo_Hi",
+          "R3_DMSO_Ratio_Lo_Hi")
+boettcher <- boettcher[,keep]
+
 ####################### combine papers #########################################
 
 # format the data for the promoter density plot
@@ -109,15 +126,25 @@ promoterDensityPlotData_giacomelli$value <- suppressWarnings(as.numeric(as.chara
 promoterDensityPlotData_giacomelli <- as.data.frame(promoterDensityPlotData_giacomelli)
 promoterHeatmapPlotData_giacomelli <- promoterDensityPlotData_giacomelli
 
-
 promoterDensityPlotData_hahn <- suppressWarnings(melt(hahn, id.vars=c("cDNA_variant", "p_variant", "Variant_Classification", "publication")))
 promoterDensityPlotData_hahn$value <- suppressWarnings(as.numeric(as.character(promoterDensityPlotData_hahn$value)))
 promoterDensityPlotData_hahn <- as.data.frame(promoterDensityPlotData_hahn)
 promoterHeatmapPlotData_hahn <- promoterDensityPlotData_hahn
 
+promoterDensityPlotData_boettcher <- suppressWarnings(melt(boettcher, id.vars=c("cDNA_variant", "p_variant", "Variant_Classification", "publication")))
+promoterDensityPlotData_boettcher$value <- suppressWarnings(as.numeric(as.character(promoterDensityPlotData_boettcher$value)))
+promoterDensityPlotData_boettcher <- as.data.frame(promoterDensityPlotData_boettcher)
+promoterHeatmapPlotData_boettcher <- promoterDensityPlotData_boettcher
+
 # combine the data
-promoterDensityPlotData <- rbind(promoterDensityPlotData_giacomelli, promoterDensityPlotData_kato, promoterDensityPlotData_hahn)
-promoterHeatmapPlotData <- rbind(promoterHeatmapPlotData_giacomelli, promoterHeatmapPlotData_kato, promoterHeatmapPlotData_hahn)
+promoterDensityPlotData <- rbind(promoterDensityPlotData_giacomelli,
+                                 promoterDensityPlotData_kato,
+                                 promoterDensityPlotData_hahn,
+                                 promoterDensityPlotData_boettcher)
+promoterHeatmapPlotData <- rbind(promoterHeatmapPlotData_giacomelli,
+                                 promoterHeatmapPlotData_kato,
+                                 promoterHeatmapPlotData_hahn,
+                                 promoterHeatmapPlotData_boettcher)
 
 ######################## format data for heatmaps ##############################
 

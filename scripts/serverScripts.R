@@ -7,11 +7,11 @@ densityPlot <- function(input, data){
   renderPlot({
     
     # find the x-intercept for the combination of promoter groups and variants
-    variantXintercept <- data[data$variable %in% c(input$promoterCheckGroup_kato, input$promoterCheckGroup_giacomelli, input$promoterCheckGroup_hahn),]
+    variantXintercept <- data[data$variable %in% c(input$promoterCheckGroup_kato, input$promoterCheckGroup_giacomelli, input$promoterCheckGroup_hahn, input$promoterCheckGroup_boettcher),]
     variantXintercept <- variantXintercept[variantXintercept$p_variant %in% input$variant,]
     
     # make a density plot for only the selected promoter by filtering the data
-    data <- data[data$variable %in% c(input$promoterCheckGroup_kato, input$promoterCheckGroup_giacomelli, input$promoterCheckGroup_hahn),]
+    data <- data[data$variable %in% c(input$promoterCheckGroup_kato, input$promoterCheckGroup_giacomelli, input$promoterCheckGroup_hahn, input$promoterCheckGroup_boettcher),]
     
     # construct the plot
     plot <- ggplot(data, aes(value, fill=Variant_Classification)) +
@@ -31,7 +31,7 @@ heatmapPlot <- function(input, data){
   
   renderPlot({
     data$position_aa <- factor(data$position_aa, levels=as.character(1:394))
-    data <- data[data$variable %in% c(input$promoterCheckGroup2_kato, input$promoterCheckGroup2_giacomelli, input$promoterCheckGroup2_hahn),]
+    data <- data[data$variable %in% c(input$promoterCheckGroup2_kato, input$promoterCheckGroup2_giacomelli, input$promoterCheckGroup2_hahn, input$promoterCheckGroup2_boettcher),]
     plot <- ggplot(data, aes(x=mt_aa, y=position_aa, fill=value)) + geom_tile() + scale_fill_viridis() +
       facet_wrap(~variable, drop=TRUE) + theme(axis.text.y=element_blank(), axis.ticks=element_blank())
     return(plot)
@@ -57,6 +57,8 @@ dataDescriptions <- function(input){
     } else if(input$dataset == 2){
       memo <- HTML("Arpad to fill in")
     } else if(input$dataset == 3){
+      memo <- HTML("Arpad to fill in")
+    } else if(input$dataset == 4){
       memo <- HTML("Arpad to fill in")
     }
     return(memo)
@@ -91,6 +93,8 @@ dataSource <- function(input){
                        "Link: NA", sep='<br>'))
     } else if(input$dataset == 3){
       memo <- HTML("Arpad to fill in")
+    } else if(input$dataset == 4){
+      memo <- HTML("Arpad to fill in")
     }
     return(memo)
   })
@@ -116,6 +120,8 @@ dataColumns <- function(input){
       memo <- HTML("\"A549_p53WT_Nutlin-3_Z-score\", \"A549_p53NULL_Nutlin-3_Z-score\", \"A549_p53NULL_Etoposide_Z-score\"")
     } else if(input$dataset == 3){
       memo <- HTML("Arpad to fill in")
+    } else if(input$dataset == 4){
+      memo <- HTML("Arpad to fill in")
     }
     return(memo)
   })
@@ -140,6 +146,8 @@ dataPreProcess <- function(input){
       memo <- HTML("None")
     } else if(input$dataset == 3){
       memo <- HTML("Arpad to fill in")
+    } else if(input$dataset == 4){
+      memo <- HTML("Arpad to fill in")
     }
     return(memo)
   })
@@ -163,6 +171,8 @@ dataPostProcess <- function(input){
     } else if(input$dataset == 2){
       memo <- HTML("None")
     } else if(input$dataset == 3){
+      memo <- HTML("Arpad to fill in")
+    } else if(input$dataset == 4){
       memo <- HTML("Arpad to fill in")
     }
     return(memo)

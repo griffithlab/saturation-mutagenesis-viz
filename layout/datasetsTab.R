@@ -15,7 +15,10 @@ datasetsTab <- function(){
                         wellPanel(
                           
                           selectInput("dataset", label = h3("Manuscript"), 
-                                      choices = list("Kato et al. 2003" = 1, "giacomelli et al. 2018" = 2, "hahn et al. 2018" = 3), 
+                                      choices = list("Kato et al. 2003" = 1,
+                                                     "giacomelli et al. 2018" = 2,
+                                                     "hahn et al. 2018" = 3,
+                                                     "boettcher et al. 2019" = 4), 
                                       selected = 1)
                         )
                   ),
