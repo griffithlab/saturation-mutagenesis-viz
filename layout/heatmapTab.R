@@ -36,7 +36,15 @@ heatmapTab <- function(){
                                    checkboxGroupInput("promoterCheckGroup2_giacomelli", label = h3("giacomelli et al. 2018"),
                                                       choices = list("p53NULL_Nutlin-3_Z-score" = "A549_p53NULL_Nutlin-3_Z-score",
                                                                      "p53NULL_Etoposide_Z-score"="A549_p53NULL_Etoposide_Z-score",
-                                                                     "p53WT_Nutlin-3_Z-score" = "A549_p53WT_Nutlin-3_Z-score")))
+                                                                     "p53WT_Nutlin-3_Z-score" = "A549_p53WT_Nutlin-3_Z-score")),
+                                   
+                                   checkboxGroupInput("promoterCheckGroup2_hahn", label = h3("hahn et al. 2018"),
+                                                      choices = list("p53WT_Early_Time_Point"="A549_p53WT_Early_Time_Point_Experiment",
+                                                                     "p53WT_Nutlin.3"="A549_p53WT_Nutlin.3_Experiment",          
+                                                                     "p53NULL_Early_Time_Point"="A549_p53NULL_Early_Time_Point_Experiment",
+                                                                     "p53NULL_Nutlin.3"="A549_p53NULL_Nutlin.3_Experiment",        
+                                                                     "p53NULL_Etoposide"="A549_p53NULL_Etoposide_Experiment"))
+                                   )
                             
                           ),
                           

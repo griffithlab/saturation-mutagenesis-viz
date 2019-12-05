@@ -69,6 +69,31 @@ giacomelli$p_variant <- paste0("p.", giacomelli$AA_wt, giacomelli$Position, giac
 #ggplot(tmp, aes(x=AA_variant, y=Position)) + geom_tile() + scale_fill_viridis(aes(fill=`A549_p53WT_Nutlin-3_Z-score`))
 #tmp <- giacomelli[,c("AA_wt", "AA_variant", "Position", "A549_p53WT_Nutlin-3_Z-score")]
 
+###################### hahn 2018 paper #########################################
+
+# read data
+hahn <- read.delim("data/hahn_2018_st2.tsv")
+
+# average duplicate experiments
+hahn$A549_p53WT_Early_Time_Point_Experiment <- log2(rowMeans(hahn[,c("A549_p53WT_Early_Time_Point_Experiment_1", "A549_p53WT_Early_Time_Point_Experiment_2")]) + 1)
+hahn$A549_p53WT_Nutlin.3_Experiment <- log2(rowMeans(hahn[,c("A549_p53WT_Nutlin.3_Experiment_1", "A549_p53WT_Nutlin.3_Experiment_2")]) + 1)
+hahn$A549_p53NULL_Early_Time_Point_Experiment <- log2(rowMeans(hahn[,c("A549_p53NULL_Early_Time_Point_Experiment_1", "A549_p53NULL_Early_Time_Point_Experiment_2")]) + 1)
+hahn$A549_p53NULL_Nutlin.3_Experiment <- log2(rowMeans(hahn[,c("A549_p53NULL_Nutlin.3_Experiment_1", "A549_p53NULL_Nutlin.3_Experiment_2")]) + 1)
+hahn$A549_p53NULL_Etoposide_Experiment <- log2(rowMeans(hahn[,c("A549_p53NULL_Etoposide_Experiment_1", "A549_p53NULL_Etoposide_Experiment_2")]) + 1)
+
+# add columns we need
+hahn$publication <- "hahn et al. 2018"
+hahn$Variant_Classification <- ifelse(hahn$Wt_aa == hahn$Vt_aa, "synonymous", "non synonymous")
+hahn$cDNA_variant <- NA
+hahn$p_variant <- paste("p.", hahn$Allele, sep="")
+
+# remove any redundant columns
+keep <- c("cDNA_variant", "p_variant", "Variant_Classification", "publication",
+          "A549_p53WT_Early_Time_Point_Experiment", "A549_p53WT_Nutlin.3_Experiment",
+          "A549_p53NULL_Early_Time_Point_Experiment", "A549_p53NULL_Nutlin.3_Experiment",
+          "A549_p53NULL_Etoposide_Experiment")
+hahn <- hahn[,keep]
+
 ####################### combine papers #########################################
 
 # format the data for the promoter density plot
@@ -84,9 +109,15 @@ promoterDensityPlotData_giacomelli$value <- suppressWarnings(as.numeric(as.chara
 promoterDensityPlotData_giacomelli <- as.data.frame(promoterDensityPlotData_giacomelli)
 promoterHeatmapPlotData_giacomelli <- promoterDensityPlotData_giacomelli
 
+
+promoterDensityPlotData_hahn <- suppressWarnings(melt(hahn, id.vars=c("cDNA_variant", "p_variant", "Variant_Classification", "publication")))
+promoterDensityPlotData_hahn$value <- suppressWarnings(as.numeric(as.character(promoterDensityPlotData_hahn$value)))
+promoterDensityPlotData_hahn <- as.data.frame(promoterDensityPlotData_hahn)
+promoterHeatmapPlotData_hahn <- promoterDensityPlotData_hahn
+
 # combine the data
-promoterDensityPlotData <- rbind(promoterDensityPlotData_giacomelli, promoterDensityPlotData_kato)
-promoterHeatmapPlotData <- rbind(promoterHeatmapPlotData_giacomelli, promoterHeatmapPlotData_kato)
+promoterDensityPlotData <- rbind(promoterDensityPlotData_giacomelli, promoterDensityPlotData_kato, promoterDensityPlotData_hahn)
+promoterHeatmapPlotData <- rbind(promoterHeatmapPlotData_giacomelli, promoterHeatmapPlotData_kato, promoterHeatmapPlotData_hahn)
 
 ######################## format data for heatmaps ##############################
 
@@ -97,3 +128,4 @@ promoterHeatmapPlotData$mt_aa <- gsub("p\\.\\(*([A-Z]+)([0-9]+)([A-Z]+)\\)*", "\
 
 # remove na's
 promoterHeatmapPlotData <- promoterHeatmapPlotData[-which(is.na(promoterHeatmapPlotData$value)),]
+
