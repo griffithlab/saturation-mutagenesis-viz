@@ -151,6 +151,12 @@ promoterHeatmapPlotData <- rbind(promoterHeatmapPlotData_giacomelli,
 
 tp53_mut <- fread("data/NM_000546_annoDomain.tsv")
 
+################################################################################
+########## variant categories ##################################################
+
+# predefined variant categories, LOF/GOF etc.
+varCategory <- fread("data/varCategory.tsv")
+
 ######################## format data for heatmaps ##############################
 
 # split out amino acid positions

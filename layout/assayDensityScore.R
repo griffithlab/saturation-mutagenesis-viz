@@ -71,9 +71,11 @@ assayDensityScore <- function(){
                           
                           # widget to select a variant to display
                           h3("Function"),
-                          selectizeInput('variant', label = NULL, choices = NULL,
-                                         options = list(placeholder = 'Type a variant, e.g. p.R175H',
-                                                        maxOptions = 100))
+                          checkboxGroupInput('checkGroupFunction', label = NULL,
+                                             choices = list("Loss of Function"="LOF",
+                                                            "Gain of Function"="GOF",
+                                                            "Dominant Negative"="DN",
+                                                            "Neomorph"="NM"))
                         )
                  ),
                  

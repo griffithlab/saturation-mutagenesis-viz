@@ -19,7 +19,7 @@ shinyServer(function(input, output, session){
     choices = kato$p_variant
   )
   
-  output$promoterDensityPlot <- densityPlot(input, promoterDensityPlotData, tp53_mut)
+  output$promoterDensityPlot <- densityPlot(input, promoterDensityPlotData, tp53_mut, varCategory)
   output$promoterAssayData <- DT::renderDataTable(tp53_mut, rownames=F, options=list(pageLength = 10))
   
   # Heatmap Tab Code
