@@ -2,13 +2,13 @@
 ############# Server side functions ############################################
 ################################################################################
 
-densityPlot <- function(input, data){
+densityPlot <- function(input, data, data2){
   
   renderPlot({
     
     # find the x-intercept for the combination of promoter groups and variants
     variantXintercept <- data[data$variable %in% c(input$promoterCheckGroup_kato, input$promoterCheckGroup_giacomelli, input$promoterCheckGroup_hahn, input$promoterCheckGroup_boettcher),]
-    variantXintercept <- variantXintercept[variantXintercept$p_variant %in% input$variant,]
+    variantXintercept <- variantXintercept[variantXintercept$p_variant %in% data2[input$promoterAssayData_rows_selected]$p_variant,]
     
     # make a density plot for only the selected promoter by filtering the data
     data <- data[data$variable %in% c(input$promoterCheckGroup_kato, input$promoterCheckGroup_giacomelli, input$promoterCheckGroup_hahn, input$promoterCheckGroup_boettcher),]

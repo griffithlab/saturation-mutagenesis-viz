@@ -18,9 +18,9 @@ shinyServer(function(input, output, session){
     session, 'variant', server = TRUE,
     choices = kato$p_variant
   )
-  output$promoterDensityPlot <- densityPlot(input, promoterDensityPlotData)
-  output$promoterAssayData <- DT::renderDataTable(promoterDensityPlotData[,c("cDNA_variant", "p_variant", "Variant_Classification", "publication")],
-                                                  rownames=F, options=list(pageLength = 10))
+  
+  output$promoterDensityPlot <- densityPlot(input, promoterDensityPlotData, tp53_mut)
+  output$promoterAssayData <- DT::renderDataTable(tp53_mut, rownames=F, options=list(pageLength = 10))
   
   # Heatmap Tab Code
   output$promoterHeatmapPlot <- heatmapPlot(input, promoterHeatmapPlotData)

@@ -146,6 +146,11 @@ promoterHeatmapPlotData <- rbind(promoterHeatmapPlotData_giacomelli,
                                  promoterHeatmapPlotData_hahn,
                                  promoterHeatmapPlotData_boettcher)
 
+################################################################################
+######### Master mutation data #################################################
+
+tp53_mut <- fread("data/NM_000546_annoDomain.tsv")
+
 ######################## format data for heatmaps ##############################
 
 # split out amino acid positions

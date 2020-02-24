@@ -70,7 +70,7 @@ assayDensityScore <- function(){
                           hr(),
                           
                           # widget to select a variant to display
-                          h3("Variant"),
+                          h3("Function"),
                           selectizeInput('variant', label = NULL, choices = NULL,
                                          options = list(placeholder = 'Type a variant, e.g. p.R175H',
                                                         maxOptions = 100))
