@@ -11,7 +11,7 @@ source("layout/datasetsTab.R")
 source("layout/heatmapTab.R")
 
 # define the top navigation bar
-navbarPage("CDI TP53 Project", theme="bootstrap.css",
+navbarPage(yamlInputs$title, theme="bootstrap.css",
            
            # define tabs in the navbar
            assayDensityScore(),
