@@ -1,7 +1,7 @@
 ################################################################################
 ############# global script to be sourced by both the UI and Server ############
 ################################################################################
-
+browser()
 # load necessary libraries
 source("scripts/libraryScripts.R")
 
@@ -15,6 +15,22 @@ yamlInputs <- read_yaml("setup/inputs.yml")
 ##################### Load data and clean it up ################################
 
 ################# kato et al. dataset ##########################################
+
+
+# a <- function(x){
+#   name <- x$name
+#   file <- paste0("data/", x$file)
+#   assayData <- fread(file)
+#   assayData[,"name" := name]
+#   cols <- c("name", x$position_columns, x$data_columns)
+#   assayData <- assayData[,..cols]
+#   return(assayData)
+# }
+# 
+# tmp <- lapply(yamlInputs$assay_files, a)
+# tmp <- rbindlist(tmp)
+#browser()
+
 
 # Load variant/promoter dataset
 kato <- fread("data/kato_et_al_db.tsv")

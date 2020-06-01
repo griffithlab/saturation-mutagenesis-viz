@@ -1,7 +1,7 @@
 ################################################################################
 ####################### Project Title ##########################################
 ################################################################################
-title: "CDI TP53 Project"
+title: "TPK1"
 
 ################################################################################
 ##################  Transcript Information #####################################
@@ -13,28 +13,18 @@ domain_file: NM_000546_domain.tsv
 #######################  Assay Data ############################################
 ################################################################################
 assay_files:
-  - name: "Boettcher et al."
-    file: Boettcher_2019.tsv
+  - name: "DMS-TileSeq"
+    file: "urn mavedb 00000001-d-2_scores.csv"
     data_columns:
-      - test1
-      - test2
+      - score
     position_columns:
-      - test3
-  - name: "giacomelli et al."
-    file: giacomelli_et_al_2018.tsv
-    cols:
-      - test1
-      - test2
-  - name: "Kato et al."
-    file: kato_et_al_db.tsv
-    cols:
-      - test1
-      - test2
-  - name: "hahn et al."
-    file: hahn_2018_st2.tsv
-    cols:
-      - test1
-      - test2
+      - hgvs_pro
+  - name: "Machine Learning Refined"
+    file: "urn mavedb 00000001-d-1_scores.csv"
+    data_columns:
+      - score
+    position_columns:
+      - hgvs_pro
 
 ################################################################################
 ######################### Functional Data ######################################
