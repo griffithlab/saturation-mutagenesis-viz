@@ -18,12 +18,12 @@ shinyServer(function(input, output, session){
     session, 'variant', server = TRUE,
     choices = kato$p_variant
   )
-  
-  output$promoterDensityPlot <- densityPlot(input, promoterDensityPlotData, tp53_mut, varCategory)
-  output$promoterAssayData <- DT::renderDataTable(tp53_mut, rownames=F, options=list(pageLength = 10))
+  #browser()
+  output$promoterDensityPlot <- densityPlot(input, assayData, aminoAcidPermutations, varCategory)
+  output$promoterAssayData <- DT::renderDataTable(aminoAcidPermutations, rownames=F, options=list(pageLength = 10))
   
   # Heatmap Tab Code
-  output$promoterHeatmapPlot <- heatmapPlot(input, promoterHeatmapPlotData)
+  output$promoterHeatmapPlot <- heatmapPlot(input, assayData)
   
   # description Tab Code
   output$datasetsDescription <- dataDescriptions(input)

@@ -1,7 +1,7 @@
 ################################################################################
 ############# global script to be sourced by both the UI and Server ############
 ################################################################################
-browser()
+
 # load necessary libraries
 source("scripts/libraryScripts.R")
 
@@ -14,22 +14,23 @@ yamlInputs <- read_yaml("setup/inputs.yml")
 ################################################################################
 ##################### Load data and clean it up ################################
 
+#################### Input Yaml Data ###########################################
+a <- function(x){
+  name <- x$name
+  file <- paste0("data/", x$file)
+  assayData <- fread(file)
+  assayData[,"name" := name]
+  cols <- c("name", x$position_columns, x$data_columns)
+  assayData <- assayData[,..cols]
+  return(assayData)
+}
+
+assayData <- lapply(yamlInputs$assay_files, a)
+assayData <- rbindlist(assayData)
+
 ################# kato et al. dataset ##########################################
 
 
-# a <- function(x){
-#   name <- x$name
-#   file <- paste0("data/", x$file)
-#   assayData <- fread(file)
-#   assayData[,"name" := name]
-#   cols <- c("name", x$position_columns, x$data_columns)
-#   assayData <- assayData[,..cols]
-#   return(assayData)
-# }
-# 
-# tmp <- lapply(yamlInputs$assay_files, a)
-# tmp <- rbindlist(tmp)
-#browser()
 
 
 # Load variant/promoter dataset
@@ -164,6 +165,18 @@ promoterHeatmapPlotData <- rbind(promoterHeatmapPlotData_giacomelli,
 
 tp53_mut <- fread("data/NM_000546_annoDomain.tsv")
 
+coord <- 1:yamlInputs$transcript_AA_length
+aminoAcid <- c("Ala", "Cys", "Asp", "Glu", "Phe", "Gly", "His", "Ile", "Lys",
+               "Leu", "Met", "Asn", "Pro", "Gln", "Arg", "Ser", "Thr", "Val",
+               "Trp", "Tyr")
+
+aminoAcidPermutations <- CJ(aminoAcid, coord, aminoAcid)
+colnames(aminoAcidPermutations) <- c("wt", "coord", "mt")
+aminoAcidPermutations <- aminoAcidPermutations[wt == mt, mt := "="]
+aminoAcidPermutations[,"p_variant" := paste0("p.", wt, coord, mt)]
+aminoAcidPermutations[,c("wt", "mt") := NULL]
+aminoAcidPermutations[,`:=`(domainLongName=NA, domainShortName=NA)]
+
 ################################################################################
 ########## variant categories ##################################################
 
@@ -176,6 +189,13 @@ varCategory <- fread("data/varCategory.tsv")
 promoterHeatmapPlotData$wt_aa <- gsub("p\\.\\(*([A-Z]+)([0-9]+)([A-Z]+)\\)*", "\\1", promoterHeatmapPlotData$p_variant, perl=T)
 promoterHeatmapPlotData$position_aa <- gsub("p\\.\\(*([A-Z]+)([0-9]+)([A-Z]+)\\)*", "\\2", promoterHeatmapPlotData$p_variant, perl=T)
 promoterHeatmapPlotData$mt_aa <- gsub("p\\.\\(*([A-Z]+)([0-9]+)([A-Z]+)\\)*", "\\3", promoterHeatmapPlotData$p_variant, perl=T)
+
+assayData$wt_aa <- gsub("p\\.\\(*([A-Za-z]+)([0-9]+)(=|[A-Za-z]+)\\)*", "\\1", assayData$hgvs_pro, perl=T)
+assayData$position_aa <- gsub("p\\.\\(*([A-Za-z]+)([0-9]+)(=|[A-Za-z]+)\\)*", "\\2", assayData$hgvs_pro, perl=T)
+assayData$mt_aa <- gsub("p\\.\\(*([A-Za-z]+)([0-9]+)(=|[A-Za-z]+)\\)*", "\\3", assayData$hgvs_pro, perl=T)
+
+# set if synonymous or not
+assayData[,"Variant_Classification" := ifelse(mt_aa == "=", "synonymous", "non synonymous")]
 
 # remove na's
 promoterHeatmapPlotData <- promoterHeatmapPlotData[-which(is.na(promoterHeatmapPlotData$value)),]
