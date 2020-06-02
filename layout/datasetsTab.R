@@ -4,6 +4,9 @@
 
 datasetsTab <- function(){
   
+  selection <- lapply(yamlInputs$assay_files, function(x){x$name})
+  names(selection) <- selection
+  
     tabPanel("Datasets",
              
              fluidPage(
@@ -14,27 +17,16 @@ datasetsTab <- function(){
                         
                         wellPanel(
                           
-                          selectInput("dataset", label = h3("Manuscript"), 
-                                      choices = list("Kato et al. 2003" = 1,
-                                                     "giacomelli et al. 2018" = 2,
-                                                     "hahn et al. 2018" = 3,
-                                                     "boettcher et al. 2019" = 4), 
-                                      selected = 1)
+                          selectInput("assaySelect", label = h3("Dataset"), 
+                                      choices = selection, 
+                                      selected = selection[[1]])
                         )
                   ),
                  
                  column(8,
                         
-                        h3("Description"),
-                        htmlOutput("datasetsDescription"),
-                        h3("Source"),
+                        h3("Information"),
                         htmlOutput("datasetsSource"),
-                        h3("Columns Used"),
-                        htmlOutput("datasetsColumns"),
-                        h3("Pre-Processing"),
-                        htmlOutput("datasetsPreProcess"),
-                        h3("Post-Processing"),
-                        htmlOutput("datasetsPostProcess")
                   )
                 )
               )

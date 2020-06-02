@@ -19,6 +19,8 @@ assay_files:
       - score
     position_columns:
       - hgvs_pro
+    description: "this is a test"
+    source: "another test"
   - name: "Machine Learning Refined"
     file: "urn mavedb 00000001-d-1_scores.csv"
     data_columns:

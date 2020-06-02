@@ -79,104 +79,15 @@ dataDescriptions <- function(input){
 dataSource <- function(input){
   
   renderUI({
+    index <- which(sapply(yamlInputs$assay_files, function(x){x$name == input$assaySelect}))
     
-    if(input$dataset == 1){
-      memo <- HTML(paste("Manuscript: The TP53 website: an integrative resource centre for the TP53 mutation database and TP53 mutant analysis",
-                       "Author: What should we put here?",
-                       "Year: 2017",
-                       "Source: Website",
-                       "Link: https://p53.fr/images/Database/UMD_variants_US.tsv.zip", sep='<br>'))
+      memo <- HTML(paste("Name: ", yamlInputs$assay_files[[index]]$name,
+                         "Source: ", yamlInputs$assay_files[[index]]$source,
+                       "Description: ", yamlInputs$assay_files[[index]]$description,
+                        sep='<br>'))
       
-    } else if(input$dataset == 2){
-      memo <- HTML(paste("Manuscript: Mutational processes shape the landscape of TP53 mutations in human cancer",
-                       "Author: Andrew O. Giacomelli",
-                       "Year: 2018",
-                       "Source: Supplemental Table 3",
-                       "Link: NA", sep='<br>'))
-    } else if(input$dataset == 3){
-      memo <- HTML("Arpad to fill in")
-    } else if(input$dataset == 4){
-      memo <- HTML("Arpad to fill in")
-    }
-    return(memo)
-  })
-}
-
-#' dataColumns
-#'
-#' Function to render a Column description in the dataset tab
-#' @name dataColumn
-#' @rdname Server-Datasets-Tab
-#' @param input shiny input object from the UI
-#' @return character
-#' @details Function corresponds to the Column Used subheader in the dataset tab
-#' , it's purpose is to retrieve a text description based on the selected dataset.
-dataColumns <- function(input){
-  
-  renderUI({
+      return(memo)
+      
     
-    if(input$dataset == 1){
-      memo <- HTML("\"WAF1_Act\", \"MDM2_Act\", \"BAX_Act\", \"_14_3_3_s_Act\", \"AIP_Act\",
-                       \"GADD45_Act\", \"NOXA_Act\", \"p53R2_Act\"")
-    } else if(input$dataset == 2){
-      memo <- HTML("\"A549_p53WT_Nutlin-3_Z-score\", \"A549_p53NULL_Nutlin-3_Z-score\", \"A549_p53NULL_Etoposide_Z-score\"")
-    } else if(input$dataset == 3){
-      memo <- HTML("Arpad to fill in")
-    } else if(input$dataset == 4){
-      memo <- HTML("Arpad to fill in")
-    }
-    return(memo)
-  })
-}
-
-#' dataPreProcess
-#'
-#' Function to render a Description in the dataset tab
-#' @name dataPreProcess
-#' @rdname Server-Datasets-Tab
-#' @param input shiny input object from the UI
-#' @return character
-#' @details Function corresponds to the Pre-Processing subheader in the dataset tab
-#' , it's purpose is to retrieve a text description based on the selected dataset.
-dataPreProcess <- function(input){
-  
-  renderUI({
-    
-    if(input$dataset == 1){
-      memo <- HTML("Data was restricted to Missense and Nonsense Mutations")
-    } else if(input$dataset == 2){
-      memo <- HTML("None")
-    } else if(input$dataset == 3){
-      memo <- HTML("Arpad to fill in")
-    } else if(input$dataset == 4){
-      memo <- HTML("Arpad to fill in")
-    }
-    return(memo)
-  })
-}
-
-#' dataPostProcess
-#'
-#' Function to render a Description in the dataset tab
-#' @name dataPostProcess
-#' @rdname Server-Datasets-Tab
-#' @param input shiny input object from the UI
-#' @return character
-#' @details Function corresponds to the Post-Processing subheader in the dataset tab
-#' , it's purpose is to retrieve a text description based on the selected dataset.
-dataPostProcess <- function(input){
-  
-  renderUI({
-    
-    if(input$dataset == 1){
-      memo <- HTML("None")
-    } else if(input$dataset == 2){
-      memo <- HTML("None")
-    } else if(input$dataset == 3){
-      memo <- HTML("Arpad to fill in")
-    } else if(input$dataset == 4){
-      memo <- HTML("Arpad to fill in")
-    }
-    return(memo)
   })
 }
