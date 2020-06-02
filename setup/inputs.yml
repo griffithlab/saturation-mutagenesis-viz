@@ -13,20 +13,14 @@ domain_file: NM_000546_domain.tsv
 #######################  Assay Data ############################################
 ################################################################################
 assay_files:
-  - name: "DMS-TileSeq"
-    file: "urn mavedb 00000001-d-2_scores.csv"
+  - name: "Max Staller Data"
+    file: "forZach.tsv"
     data_columns:
-      - score
+      - AvgZscore
     position_columns:
-      - hgvs_pro
+      - ADname
     description: "this is a test"
     source: "another test"
-  - name: "Machine Learning Refined"
-    file: "urn mavedb 00000001-d-1_scores.csv"
-    data_columns:
-      - score
-    position_columns:
-      - hgvs_pro
 
 ################################################################################
 ######################### Functional Data ######################################
