@@ -13,24 +13,14 @@ source("scripts/serverScripts.R")
 # shiny server registration
 shinyServer(function(input, output, session){
   
-  # Density Tab Code
-  updateSelectizeInput(
-    session, 'variant', server = TRUE,
-    choices = kato$p_variant
-  )
-  
+  # Density tab
   output$promoterDensityPlot <- densityPlot(input, assayData, aminoAcidPermutations, varCategory)
   output$promoterAssayData <- DT::renderDataTable(aminoAcidPermutations, rownames=F, options=list(pageLength = 10))
   
-  # Heatmap Tab Code
+  # Heatmap Tab
   output$promoterHeatmapPlot <- heatmapPlot(input, assayData)
   
-  # description Tab Code
-  #output$datasetsDescription <- dataDescriptions(input)
+  # Description Tab
   output$datasetsSource <- dataSource(input)
-  #output$datasetsColumns <- dataColumns(input)
-  #output$datasetsPreProcess <- dataPreProcess(input)
-  #output$datasetsPostProcess <- dataPostProcess(input)
-
 
 })

@@ -32,39 +32,14 @@ densityPlot <- function(input, data, data2, data3){
 heatmapPlot <- function(input, data){
   
   renderPlot({
-    data$position_aa <- factor(data$position_aa, levels=as.character(1:394))
+    data$position_aa <- factor(data$position_aa, levels=as.character(1:yamlInputs$transcript_AA_length))
     data <- data[data$name %in% input$assayCheckGroup2,]
     plot <- ggplot(data, aes(x=mt_aa, y=position_aa, fill=score)) + geom_tile() + scale_fill_viridis() +
-      facet_wrap(~name, drop=TRUE) + theme(axis.text.y=element_blank(), axis.ticks=element_blank())
+      facet_wrap(~name, drop=TRUE) + theme(axis.text.y=element_blank(), axis.ticks=element_blank()) +
+      scale_y_discrete(drop=FALSE)
     return(plot)
   })
   
-}
-
-#' dataDescriptions
-#'
-#' Function to render a Description in the dataset tab
-#' @name dataDescriptions
-#' @rdname Server-Datasets-Tab
-#' @param input shiny input object from the UI
-#' @return character
-#' @details Function corresponds to the Description subheader int he dataset tab
-#' , it's purpose is to retrieve a text description based on the selected dataset.
-dataDescriptions <- function(input){
-  
-  renderUI({
-    
-    if(input$dataset == 1){
-      memo <- HTML("Arpad to fill in")
-    } else if(input$dataset == 2){
-      memo <- HTML("Arpad to fill in")
-    } else if(input$dataset == 3){
-      memo <- HTML("Arpad to fill in")
-    } else if(input$dataset == 4){
-      memo <- HTML("Arpad to fill in")
-    }
-    return(memo)
-    })
 }
 
 #' dataSource
