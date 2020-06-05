@@ -1,7 +1,7 @@
 ################################################################################
 ####################### Project Title ##########################################
 ################################################################################
-title: "CDI TP53 Project"
+title: "TPK1"
 
 ################################################################################
 ##################  Transcript Information #####################################
@@ -13,29 +13,114 @@ domain_file: NM_000546_domain.tsv
 #######################  Assay Data ############################################
 ################################################################################
 assay_files:
-  - name: "Boettcher et al."
-    file: Boettcher_2019.tsv
+  - name: "Staller Data"
+    file: "staller_data.tsv"
     data_columns:
-      - test1
-      - test2
+      - score
     position_columns:
-      - test3
-  - name: "giacomelli et al."
-    file: giacomelli_et_al_2018.tsv
-    cols:
-      - test1
-      - test2
-  - name: "Kato et al."
-    file: kato_et_al_db.tsv
-    cols:
-      - test1
-      - test2
-  - name: "hahn et al."
-    file: hahn_2018_st2.tsv
-    cols:
-      - test1
-      - test2
+      - hgvs_pro
+    description: "Data from Max Stallers tp53 deep mutational scan"
+    source: "Staller"
+    
+  - name: "Giacomelli p53WT Nutlin Data"
+    file: "giacomelli_data.tsv"
+    data_columns:
+      - A549_p53WT_Nutlin-3_Z-score
+    position_columns:
+      - hgvs_pro
+    description: "Data from Giacomelli's tp53 deep mutational scan"
+    source: "Giacomelli"
+    
+  - name: "Giacomelli p53NULL Nutlin Data"
+    file: "giacomelli_data.tsv"
+    data_columns:
+      - A549_p53NULL_Nutlin-3_Z-score
+    position_columns:
+      - hgvs_pro
+    description: "Data from Giacomelli's tp53 deep mutational scan"
+    source: "Giacomelli"
+    
+  - name: "Giacomelli p53NULL Etoposide Data"
+    file: "giacomelli_data.tsv"
+    data_columns:
+      - A549_p53NULL_Etoposide_Z-score
+    position_columns:
+      - hgvs_pro
+    description: "Data from Giacomelli's tp53 deep mutational scan"
+    source: "Giacomelli"
+    
+  - name: "Kato WAF1 Data"
+    file: "kato_data.tsv"
+    data_columns:
+      - WAF1_Act
+    position_columns:
+      - p_variant
+    description: "Data from Kato et al. tp53 deep mutational scan"
+    source: "Kato"
+    
+  - name: "Kato MDM2 Data"
+    file: "kato_data.tsv"
+    data_columns:
+      - MDM2_Act
+    position_columns:
+      - p_variant
+    description: "Data from Kato et al. tp53 deep mutational scan"
+    source: "Kato"
 
+  - name: "Kato BAX Data"
+    file: "kato_data.tsv"
+    data_columns:
+      - BAX_Act
+    position_columns:
+      - p_variant
+    description: "Data from Kato et al. tp53 deep mutational scan"
+    source: "Kato"
+  
+  - name: "Kato _14_3_3_s Data"
+    file: "kato_data.tsv"
+    data_columns:
+      - _14_3_3_s_Act
+    position_columns:
+      - p_variant
+    description: "Data from Kato et al. tp53 deep mutational scan"
+    source: "Kato"
+    
+  - name: "Kato AIP Data"
+    file: "kato_data.tsv"
+    data_columns:
+      - AIP_Act
+    position_columns:
+      - p_variant
+    description: "Data from Kato et al. tp53 deep mutational scan"
+    source: "Kato"
+    
+  - name: "Kato GADD45 Data"
+    file: "kato_data.tsv"
+    data_columns:
+      - GADD45_Act
+    position_columns:
+      - p_variant
+    description: "Data from Kato et al. tp53 deep mutational scan"
+    source: "Kato"
+    
+  - name: "Kato NOXA Data"
+    file: "kato_data.tsv"
+    data_columns:
+      - NOXA_Act
+    position_columns:
+      - p_variant
+    description: "Data from Kato et al. tp53 deep mutational scan"
+    source: "Kato"
+    
+  - name: "Kato p53R2 Data"
+    file: "kato_data.tsv"
+    data_columns:
+      - p53R2_Act
+    position_columns:
+      - p_variant
+    description: "Data from Kato et al. tp53 deep mutational scan"
+    source: "Kato"
+    
 ################################################################################
 ######################### Functional Data ######################################
 ################################################################################
