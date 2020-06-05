@@ -86,6 +86,8 @@ formatAA <- function(assayData){
                                  "Y"="Tyr", "Z"="Glx", "="="="), by=mt_aa]
   }
   
+  assayData[,hgvs_pro := paste0("p.", wt_aa, position_aa, mt_aa)]
+  
   return(assayData)
 }
 
