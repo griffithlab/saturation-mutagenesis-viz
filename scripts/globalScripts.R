@@ -50,45 +50,47 @@ constructDeepScan <- function(aminoAcidCount) {
 #' Function to format p.notation amino acid codes into expected format
 #' 
 #' @rdname global-scripts
-#' @param assayData data from readAssayData
+#' @param proteinData data.table object containing the column hgvs_pro corresponging to hgvs
+#' p. notation
 #' @return data.table formatted to expectations
 #' @details This function takes the data.table object from readAssayData and
 #' formats the p. notation column to be trio codes if necessary, it also splits
-#' out WT, MT, Coord from the p.notation into separate columns
+#' out WT, MT, Coord from the p.notation into separate columns. Any data.table object
+#' with an hgvs_pro column will be sufficient.
 
-formatAA <- function(assayData){
+formatAA <- function(proteinData){
   
   # split out amino acid positions
-  assayData$wt_aa <- gsub("(p\\.)*\\(*([A-Za-z]+)([0-9]+)(=|[A-Za-z]+)\\)*", "\\2", assayData$hgvs_pro, perl=T)
-  assayData$position_aa <- gsub("(p\\.)*\\(*([A-Za-z]+)([0-9]+)(=|[A-Za-z]+)\\)*", "\\3", assayData$hgvs_pro, perl=T)
-  assayData$mt_aa <- gsub("(p\\.)*\\(*([A-Za-z]+)([0-9]+)(=|[A-Za-z]+)\\)*", "\\4", assayData$hgvs_pro, perl=T)
+  proteinData$wt_aa <- gsub("(p\\.)*\\(*([A-Za-z]+)([0-9]+)(=|[A-Za-z]+)\\)*", "\\2", proteinData$hgvs_pro, perl=T)
+  proteinData$position_aa <- gsub("(p\\.)*\\(*([A-Za-z]+)([0-9]+)(=|[A-Za-z]+)\\)*", "\\3", proteinData$hgvs_pro, perl=T)
+  proteinData$mt_aa <- gsub("(p\\.)*\\(*([A-Za-z]+)([0-9]+)(=|[A-Za-z]+)\\)*", "\\4", proteinData$hgvs_pro, perl=T)
   
   # convert to trio codes if necessary
-  if(all(nchar(assayData$wt_aa) == 1)){
+  if(all(nchar(proteinData$wt_aa) == 1)){
     map <- c("A"="Ala", "B"="Asx", "C"="Cys", "D"="Asp", "E"="Glu", "F"="Phe", "G"="Gly",
              "H"="His", "I"="Ile", "K"="Lys", "L"="Leu", "M"="Met", "N"="Asn", "P"="Pro",
              "Q"="Gln", "R"="Arg", "S"="Ser", "T"="Thr", "V"="Val", "W"="Trp", "X"="Xaa",
              "Y"="Tyr", "Z"="Glx", "="="=")
-    assayData[,"wt_aa" := switch(as.character(wt_aa), "A"="Ala", "B"="Asx", "C"="Cys", "D"="Asp", "E"="Glu", "F"="Phe", "G"="Gly",
+    proteinData[,"wt_aa" := switch(as.character(wt_aa), "A"="Ala", "B"="Asx", "C"="Cys", "D"="Asp", "E"="Glu", "F"="Phe", "G"="Gly",
                                  "H"="His", "I"="Ile", "K"="Lys", "L"="Leu", "M"="Met", "N"="Asn", "P"="Pro",
                                  "Q"="Gln", "R"="Arg", "S"="Ser", "T"="Thr", "V"="Val", "W"="Trp", "X"="Xaa",
                                  "Y"="Tyr", "Z"="Glx", "="="="), by=wt_aa]
   }
   
-  if(all(nchar(assayData$mt_aa) == 1)){
+  if(all(nchar(proteinData$mt_aa) == 1)){
     map <- c("A"="Ala", "B"="Asx", "C"="Cys", "D"="Asp", "E"="Glu", "F"="Phe", "G"="Gly",
              "H"="His", "I"="Ile", "K"="Lys", "L"="Leu", "M"="Met", "N"="Asn", "P"="Pro",
              "Q"="Gln", "R"="Arg", "S"="Ser", "T"="Thr", "V"="Val", "W"="Trp", "X"="Xaa",
              "Y"="Tyr", "Z"="Glx", "="="=")
-    assayData[,"mt_aa" := switch(as.character(mt_aa), "A"="Ala", "B"="Asx", "C"="Cys", "D"="Asp", "E"="Glu", "F"="Phe", "G"="Gly",
+    proteinData[,"mt_aa" := switch(as.character(mt_aa), "A"="Ala", "B"="Asx", "C"="Cys", "D"="Asp", "E"="Glu", "F"="Phe", "G"="Gly",
                                  "H"="His", "I"="Ile", "K"="Lys", "L"="Leu", "M"="Met", "N"="Asn", "P"="Pro",
                                  "Q"="Gln", "R"="Arg", "S"="Ser", "T"="Thr", "V"="Val", "W"="Trp", "X"="Xaa",
                                  "Y"="Tyr", "Z"="Glx", "="="="), by=mt_aa]
   }
   
-  assayData[,hgvs_pro := paste0("p.", wt_aa, position_aa, mt_aa)]
+  proteinData[,hgvs_pro := paste0("p.", wt_aa, position_aa, mt_aa)]
   
-  return(assayData)
+  return(proteinData)
 }
 
 #' annoDomain

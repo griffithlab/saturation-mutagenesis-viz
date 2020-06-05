@@ -8,16 +8,20 @@ densityPlot <- function(input, data, data2, data3){
     
     # find the x-intercept for the combination of promoter groups and variants
     functionVars <- data3
-    functionVars <- functionVars[Function %in% input$checkGroupFunction]$Variant
+    functionVars <- functionVars[Function %in% input$checkGroupFunction]
     variantXintercept <- data[data$name %in% input$assayCheckGroup,]
-    variantXintercept <- variantXintercept[variantXintercept$hgvs_pro %in% c(data2[input$promoterAssayData_rows_selected]$p_variant, functionVars),]
     
+    variantXintercept1 <- merge(variantXintercept, functionVars[,.(hgvs_pro, Function)], by="hgvs_pro")
+    variantXintercept <- variantXintercept[variantXintercept$hgvs_pro %in% c(data2[input$promoterAssayData_rows_selected]$p_variant),]
+    
+    variantXintercept <- rbindlist(list(variantXintercept, variantXintercept1), fill = TRUE)
+
     # make a density plot for only the selected promoter by filtering the data
     data <- data[data$name %in% input$assayCheckGroup,]
     
     # construct the plot
     plot <- ggplot(data, aes(score, fill=Variant_Classification)) +
-      geom_density(alpha=.7) + geom_vline(data=variantXintercept, aes(xintercept=score)) +
+      geom_density(alpha=.7) + geom_vline(data=variantXintercept, aes(xintercept=score, color=Function)) +
       theme_bw() +
       theme(strip.text=element_text(color="white"), strip.background=element_rect(fill="black")) +
       scale_fill_manual("Promoter Domain",

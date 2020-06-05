@@ -29,7 +29,9 @@ assayDensityScore <- function(){
                             column(12,
                                    
                                    # The checkbox widget for the promoter domains
-                                   checkboxGroupInput("assayCheckGroup", label = h3("Assay"),
+                                   h3("Assay", align="center"),
+                                   checkboxGroupInput("assayCheckGroup",
+                                                      label=NULL,
                                                       choices = selection,
                                                       selected = selection[[1]])
                                    
@@ -41,7 +43,8 @@ assayDensityScore <- function(){
                           hr(),
                           
                           # widget to select a variant to display
-                          h3("Function"),
+                          h3("Example Variants", align="center"),
+                          h3("(By Known Function)", align="center"),
                           checkboxGroupInput('checkGroupFunction', label = NULL,
                                              choices = list("Loss of Function"="LOF",
                                                             "Gain of Function"="GOF",

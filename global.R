@@ -36,7 +36,7 @@ aminoAcidPermutations <- annoDomain(aminoAcidPermutations, yamlInputs$domain_fil
 
 # predefined variant categories, LOF/GOF etc.
 varCategory <- fread("data/varCategory.tsv")
-
+varCategory <- formatAA(varCategory)
 
 
 
