@@ -35,14 +35,16 @@ densityPlot <- function(input, data, data2, data3){
 
 heatmapPlot <- function(input, data){
   
-  renderPlot({
+  renderPlotly({
     data$position_aa <- factor(data$position_aa, levels=as.character(1:yamlInputs$transcript_AA_length))
     data <- data[data$name %in% input$assayCheckGroup2,]
     plot <- ggplot(data, aes(x=mt_aa, y=position_aa, fill=score)) + geom_tile() + scale_fill_viridis() +
       facet_wrap(~name, drop=TRUE) + theme(axis.text.y=element_blank(), axis.ticks=element_blank()) +
       scale_y_discrete(drop=FALSE)
-    return(plot)
+    return(ggplotly(plot))
   })
+  
+  
   
 }
 

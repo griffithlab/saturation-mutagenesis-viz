@@ -36,7 +36,7 @@ heatmapTab <- function(){
                             column(12,
                                    
                                    # density plot for promoters
-                                   plotOutput('promoterHeatmapPlot')
+                                   plotlyOutput('promoterHeatmapPlot')
                             )
                           )
                           

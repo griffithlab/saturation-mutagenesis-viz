@@ -18,6 +18,8 @@ readAssayData <- function(setupYaml){
   cols <- c("name", setupYaml$position_columns, setupYaml$data_columns)
   assayData <- assayData[,..cols]
   colnames(assayData) <- c("name", "hgvs_pro", "score")
+  assayData[,score := median(score), by=.(hgvs_pro, name)]
+  assayData <- unique(assayData)
   return(assayData)
 }
 
@@ -40,7 +42,6 @@ constructDeepScan <- function(aminoAcidCount) {
   colnames(aminoAcidPermutations) <- c("wt", "coord", "mt")
   aminoAcidPermutations <- aminoAcidPermutations[wt == mt, mt := "="]
   aminoAcidPermutations[,"p_variant" := paste0("p.", wt, coord, mt)]
-  aminoAcidPermutations[,c("wt", "mt") := NULL]
   aminoAcidPermutations[,`:=`(domainLongName=NA, domainShortName=NA)]
   return(aminoAcidPermutations)
 }
