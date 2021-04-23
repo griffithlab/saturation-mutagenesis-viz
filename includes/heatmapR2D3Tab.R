@@ -7,12 +7,10 @@ heatmapTabD3 <- function(){
   selection <- lapply(yamlInputs$assay_files, function(x){x$name})
   names(selection) <- selection
   
-    tabPanel("R2D3",
-             
              fluidPage(
                
                fluidRow(
-                 
+                 h1("test"),
                  column(12,
                         
                         wellPanel(
@@ -53,6 +51,6 @@ heatmapTabD3 <- function(){
                         d3Output('d31', width="100%", height="1000px")
                  )
                )
-             )
+             
     )
 }

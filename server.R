@@ -27,14 +27,14 @@ shinyServer(function(input, output, session){
   #d3 testbed heatmap
   output$d3 <- renderD3({
     r2d3("scripts/r2d3/heatmapR2D3.js", d3_version = "6",
-         data=heatmapDataToJson(input$radior2d3, assayData, aminoAcidPermutations),
+         data=heatmapDataToJson(input$assayCheckGroup[1], assayData, aminoAcidPermutations),
          dependencies = "scripts/r2d3/heatmapR2D3.css",
          options=input$heatmap_color)
   })
   
   output$d31 <- renderD3({
     r2d3("scripts/r2d3/heatmapR2D3.js", d3_version = "6",
-         data=heatmapDataToJson(input$radior2d31, assayData, aminoAcidPermutations),
+         data=heatmapDataToJson(input$assayCheckGroup[2], assayData, aminoAcidPermutations),
          dependencies = "scripts/r2d3/heatmapR2D3.css",
          options=input$heatmap_color)
   })

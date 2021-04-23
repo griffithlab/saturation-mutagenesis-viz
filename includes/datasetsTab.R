@@ -7,7 +7,7 @@ datasetsTab <- function(){
   selection <- lapply(yamlInputs$assay_files, function(x){x$name})
   names(selection) <- selection
   
-    tabPanel("Datasets",
+    fluidPage(
              
              fluidPage(
                

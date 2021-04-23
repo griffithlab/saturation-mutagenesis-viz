@@ -5,23 +5,19 @@
 # source global R script
 source("global.R")
 
-# source the code for each tab panel
-source("layout/assayDensityScore.R")
-source("layout/datasetsTab.R")
-source("layout/heatmapTab.R")
-source("layout/heatmapR2D3Tab.R")
-source("layout/scatterR2D3Tab.R")
+# source includes elements for the app
+source("includes/header.R")
+source("includes/controlbar.R")
+source("includes/body.R")
+source("includes/sidebar.R")
+source("includes/footer.R")
 
-# define the top navigation bar
-navbarPage(yamlInputs$title, theme="bootstrap.css",
-           
-           # define tabs in the navbar
-           assayDensityScore(),
-           heatmapTab(),
-           datasetsTab(),
-           heatmapTabD3(),
-           scatterTabD3()
-           
+# Define the overall user interface
+dashboardPage(
+  header = headerINC(),
+  sidebar = sidebarINC(),
+  body = bodyINC(),
+  controlbar = controlbarINC(),
+  footer = footerINC(),
 )
-
 

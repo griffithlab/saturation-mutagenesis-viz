@@ -8,7 +8,7 @@ assayDensityScore <- function(){
   selection <- lapply(yamlInputs$assay_files, function(x){x$name})
   names(selection) <- selection
   
-    tabPanel("ACT Scores",
+    fluidPage(
              
              # set up a fluid page to use bootstrap grid system
              fluidPage(
@@ -26,14 +26,9 @@ assayDensityScore <- function(){
                           fluidRow(
                             
                             # first column of nested widget row
-                            column(12,
+                            column(12
                                    
-                                   # The checkbox widget for the promoter domains
-                                   h3("Assay", align="center"),
-                                   checkboxGroupInput("assayCheckGroup",
-                                                      label=NULL,
-                                                      choices = selection,
-                                                      selected = selection[[1]])
+
                                    
                                    )),
                           
