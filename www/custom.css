@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Tomorrow:wght@500&display=swap');
+
+.main-header .sidebar-toggle:before {
+  color: black;
+}
+
+.fa.fa-gears:before {
+  color: black;
+}
+
+.control-sidebar-dark .nav-tabs.control-sidebar-tabs>li.active>a, .control-sidebar-dark .nav-tabs.control-sidebar-tabs>li.active>a:hover, .control-sidebar-dark .nav-tabs.control-sidebar-tabs>li.active>a:focus, .control-sidebar-dark .nav-tabs.control-sidebar-tabs>li.active>a:active {
+  color: #f4edc1 !important;
+}
+
+.skin-blue .main-header .logo {
+  color: black !important;
+  font-family: 'Tomorrow', sans-serif;
+}
+
+.box-title { 
+  color: black;
+  font-family: 'Tomorrow', sans-serif;
+}
+
+.box-header {
+  background-color: #3feed7;
+  border-radius: 10px 10px 20px 0px;
+}
+
+.checkbox input[type="checkbox"]:checked + span {
+  color: #f4edc1;
+}

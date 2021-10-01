@@ -82,3 +82,13 @@ assayDensityScore <- function(){
     )
 }
 
+assayDensityPlot <- function(){
+  box(
+    title="DMS Density Viewer",
+    closable=TRUE,
+    width=12,
+    collapsible=TRUE,
+    plotOutput('promoterDensityPlot')
+  )
+}
+

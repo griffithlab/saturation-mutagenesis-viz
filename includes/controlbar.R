@@ -4,9 +4,12 @@ controlbarINC <- function(){
   names(selection) <- selection
   
   dashboardControlbar(
+    tags$head(
+      tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
+    ),
     controlbarMenu(
       id = "controlbarMenu",
-      controlbarItem("test",
+      controlbarItem("Assays",
                      checkboxGroupInput("assayCheckGroup",
                                         label=NULL,
                                         choices = selection,

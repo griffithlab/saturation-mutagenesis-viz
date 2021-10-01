@@ -1,3 +1,5 @@
 headerINC <- function(){
-  dashboardHeader(title=yamlInputs$title)
+  dashboardHeader(
+    title=yamlInputs$title
+    )
 }
